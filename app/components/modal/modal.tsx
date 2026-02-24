@@ -5,9 +5,10 @@ import { FiX } from 'react-icons/fi';
 
 interface ModalProps {
   onClose: () => void;
+  children: React.ReactNode;
 }
 
-const Modal = ({ onClose }: ModalProps) => {
+const Modal = ({ onClose, children }: ModalProps) => {
   const handleBackdropClick = (ev: React.MouseEvent<HTMLDivElement>) => {
     if (ev.target === ev.currentTarget) {
       onClose();
@@ -22,6 +23,7 @@ const Modal = ({ onClose }: ModalProps) => {
     };
 
     document.addEventListener('keydown', handleKeyDown);
+    document.body.style.overflow = 'hidden';
 
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
@@ -41,6 +43,7 @@ const Modal = ({ onClose }: ModalProps) => {
           onClick={onClose}
           aria-label="Close modal"
         />
+        {children}
       </div>
     </div>,
     document.body
