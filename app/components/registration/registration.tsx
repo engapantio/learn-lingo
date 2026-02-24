@@ -1,26 +1,38 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { useSubmit } from 'react-router';
+// import { useSubmit } from 'react-router';
 import { FiEye } from 'react-icons/fi';
 import { FiEyeOff } from 'react-icons/fi';
+import { useAuth } from '~/services/context/authContext';
 
 const Registration = () => {
   const [passwordVisibility, setPasswordVisibility] = useState(true);
   const [offIcon, setOffIcon] = useState(true);
+
   const schema = yup.object({
-    name: yup.string().required(),
-    email: yup.string().email().required(),
-    password: yup.string().min(6).required(),
+    name: yup.string().min(2).max(50).required(),
+    email: yup
+      .string()
+      .email()
+      .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)
+      .required()
+      .transform((value: string) => value?.trim()),
+    password: yup.string().min(8).required(),
   });
 
-  const submit = useSubmit();
+  type RegisterForm = yup.InferType<typeof schema>;
+
+  const navigate = useNavigate();
+  const { signup, loading } = useAuth();
+  // const submit = useSubmit();
   const {
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm({
+    formState: { errors, isSubmitting },
+  } = useForm<RegisterForm>({
     resolver: yupResolver(schema),
   });
 
@@ -34,8 +46,15 @@ const Registration = () => {
     }
   };
 
-  const onSubmit = data => {
-    submit(data, { method: 'post' });
+  const onSubmit = async (data: RegisterForm) => {
+    try {
+      const email = data.email.trim().toLowerCase();
+      console.log(data.email);
+      await signup(data.name, email, data.password);
+      navigate('/teachers');
+    } catch (error: any) {
+      alert(error.message);
+    }
   };
 
   return (
@@ -87,6 +106,7 @@ const Registration = () => {
       </fieldset>
       <button
         type="submit"
+        disabled={isSubmitting || loading}
         className="rounded-xl outline-none bg-bg-button py-4 mx-auto font-[inherit] w-109.5 h-15 font-bold  text-lg text-bg-dark text-center"
       >
         Sign Up
