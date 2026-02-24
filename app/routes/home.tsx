@@ -4,6 +4,7 @@ import { Welcome } from '../components/welcome/welcome';
 import Header from '~/components/header/header';
 import Modal from '~/components/modal/modal';
 import Registration from '~/components/registration/registration';
+import Login from '~/components/login/login';
 
 export function meta({}: Route.MetaArgs) {
   return [{ title: 'Learn Lingo' }, { name: 'description', content: 'Welcome to LearnLingo!' }];
@@ -11,6 +12,7 @@ export function meta({}: Route.MetaArgs) {
 
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLogin, setIsLogin] = useState(false);
 
   const openModal = () => setIsModalOpen(true);
 
@@ -18,12 +20,17 @@ export default function Home() {
 
   return (
     <body className="px-16 py-8 m-auto">
-      <Header openLogin={openModal} openRegistration={openModal} />
-      {isModalOpen && (
-        <Modal onClose={closeModal}>
-          <Registration />
-        </Modal>
-      )}
+      <Header
+        openLogin={() => {
+          setIsLogin(true);
+          openModal();
+        }}
+        openRegistration={() => {
+          setIsLogin(false);
+          openModal();
+        }}
+      />
+      {isModalOpen && <Modal onClose={closeModal}>{isLogin ? <Login /> : <Registration />}</Modal>}
       <Welcome />
     </body>
   );

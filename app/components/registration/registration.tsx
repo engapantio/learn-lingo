@@ -1,9 +1,14 @@
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useSubmit } from 'react-router';
+import { FiEye } from 'react-icons/fi';
+import { FiEyeOff } from 'react-icons/fi';
 
 const Registration = () => {
+  const [passwordVisibility, setPasswordVisibility] = useState(true);
+  const [offIcon, setOffIcon] = useState(true);
   const schema = yup.object({
     name: yup.string().required(),
     email: yup.string().email().required(),
@@ -18,6 +23,16 @@ const Registration = () => {
   } = useForm({
     resolver: yupResolver(schema),
   });
+
+  const handleToggle = () => {
+    if (offIcon) {
+      setOffIcon(false);
+      setPasswordVisibility(false);
+    } else {
+      setOffIcon(true);
+      setPasswordVisibility(true);
+    }
+  };
 
   const onSubmit = data => {
     submit(data, { method: 'post' });
@@ -49,13 +64,26 @@ const Registration = () => {
           placeholder="Email"
         />
         {errors.email && <p>{errors.email.message}</p>}
-        <input
-          {...register('password')}
-          type="password"
-          className="border border-solid border-bg-dark/10 rounded-xl outline-none py-4 w-full h-13.5 pl-4.5 placeholder:text-bg-dark leading-[1.38] "
-          placeholder="Password"
-        />
-        {errors.password && <p>{errors.password.message}</p>}
+        <div className="relative">
+          <input
+            {...register('password')}
+            type={passwordVisibility ? 'password' : 'text'}
+            className="border border-solid border-bg-dark/10 rounded-xl outline-none py-4 w-full h-13.5 pl-4.5 placeholder:text-bg-dark leading-[1.38] "
+            placeholder="Password"
+          />
+          {offIcon ? (
+            <FiEyeOff
+              className="absolute inline-block top-1/2 right-4.5 -translate-y-1/2 w-5 h-5"
+              onClick={handleToggle}
+            />
+          ) : (
+            <FiEye
+              className="absolute inline-block top-1/2 right-4.5 -translate-y-1/2 w-5 h-5"
+              onClick={handleToggle}
+            />
+          )}
+          {errors.password && <p>{errors.password.message}</p>}
+        </div>
       </fieldset>
       <button
         type="submit"
