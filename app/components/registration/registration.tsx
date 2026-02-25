@@ -91,12 +91,12 @@ const Registration = () => {
           />
           {offIcon ? (
             <FiEyeOff
-              className="absolute inline-block top-1/2 right-4.5 -translate-y-1/2 w-5 h-5"
+              className="absolute inline-block top-1/2 right-4.5 -translate-y-1/2 w-5 h-5 cursor-pointer"
               onClick={handleToggle}
             />
           ) : (
             <FiEye
-              className="absolute inline-block top-1/2 right-4.5 -translate-y-1/2 w-5 h-5"
+              className="absolute inline-block top-1/2 right-4.5 -translate-y-1/2 w-5 h-5 cursor-pointer"
               onClick={handleToggle}
             />
           )}
@@ -106,7 +106,7 @@ const Registration = () => {
       <button
         type="submit"
         disabled={isSubmitting || loading}
-        className="rounded-xl outline-none bg-bg-button py-4 mx-auto font-[inherit] w-109.5 h-15 font-bold  text-lg text-bg-dark text-center coursor-pointer"
+        className="rounded-xl outline-none bg-primary-green py-4 mx-auto font-[inherit] w-109.5 h-15 font-bold  text-lg text-bg-dark text-center cursor-pointer"
       >
         Sign Up
       </button>

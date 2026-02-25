@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import type { Route } from './+types/home';
-import { Welcome } from '../components/welcome/welcome';
 import Header from '~/components/header/header';
 import Modal from '~/components/modal/modal';
 import Registration from '~/components/registration/registration';
 import Login from '~/components/login/login';
+import Hero from '~/components/hero/hero';
 
 export function meta({}: Route.MetaArgs) {
   return [{ title: 'Learn Lingo' }, { name: 'description', content: 'Welcome to LearnLingo!' }];
@@ -19,7 +19,7 @@ export default function Home() {
   const closeModal = () => setIsModalOpen(false);
 
   return (
-    <body className="px-16 py-8 m-auto">
+    <body className="px-16 py-8 m-auto w-360">
       <Header
         openLogin={() => {
           setIsLogin(true);
@@ -31,7 +31,7 @@ export default function Home() {
         }}
       />
       {isModalOpen && <Modal onClose={closeModal}>{isLogin ? <Login /> : <Registration />}</Modal>}
-      <Welcome />
+      <Hero />
     </body>
   );
 }
