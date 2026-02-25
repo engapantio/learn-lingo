@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-// import { useSubmit } from 'react-router';
 import { FiEye } from 'react-icons/fi';
 import { FiEyeOff } from 'react-icons/fi';
 import { useAuth } from '~/services/context/authContext';
@@ -27,7 +26,7 @@ const Registration = () => {
 
   const navigate = useNavigate();
   const { signup, loading } = useAuth();
-  // const submit = useSubmit();
+
   const {
     register,
     handleSubmit,
@@ -107,7 +106,7 @@ const Registration = () => {
       <button
         type="submit"
         disabled={isSubmitting || loading}
-        className="rounded-xl outline-none bg-bg-button py-4 mx-auto font-[inherit] w-109.5 h-15 font-bold  text-lg text-bg-dark text-center"
+        className="rounded-xl outline-none bg-bg-button py-4 mx-auto font-[inherit] w-109.5 h-15 font-bold  text-lg text-bg-dark text-center coursor-pointer"
       >
         Sign Up
       </button>
