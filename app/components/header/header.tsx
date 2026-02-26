@@ -8,7 +8,7 @@ interface HeaderProps {
 
 const Header = ({ openLogin, openRegistration }: HeaderProps) => {
   return (
-    <header className="flex justify-between px-16 mx-auto">
+    <header className="flex bg-white justify-between px-16 mx-auto">
       <div className="flex  gap-2  py-2.5 mr-30.5">
         <img src={logo} alt="Logo" className="block w-full h-full" />
         <Link to="/" className="font-medium text-logo">

@@ -6,6 +6,8 @@
   --font-family: 'Roboto', ui-sans-serif, system-ui, sans-serif;
   --color-bg: white;
   --color-bg-dark: #121417;
+  --color-text-grey: #8a8a89;
+  --color-live: #38cd3e;
   --primary-yellow: #fbbf24;
   --primary-blue: #3b82f6;
   --color-primary-green: #10b981;
@@ -20,7 +22,7 @@
   body {
     margin: 0;
     padding: 0;
-    @apply bg-[--color-bg] dark:bg-[--color-bg-dark] text-gray-900 dark:text-gray-100 antialiased overflow-x-hidden;
+    @apply bg-[--color-bg] dark:bg-[--color-bg-dark] text-bg-dark dark:text-gray-100 antialiased overflow-x-hidden;
     font-family: var(--font-family);
     line-height: 1.5;
     font-size: 16px;

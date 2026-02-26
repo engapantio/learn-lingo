@@ -106,7 +106,7 @@ const Registration = () => {
       <button
         type="submit"
         disabled={isSubmitting || loading}
-        className="rounded-xl outline-none bg-primary-green py-4 mx-auto font-[inherit] w-109.5 h-15 font-bold  text-lg text-bg-dark text-center cursor-pointer"
+        className="rounded-xl outline-none bg-primary-green hover:bg-primary-green/75 py-4 mx-auto font-[inherit] w-109.5 h-15 font-bold  text-lg text-bg-dark text-center cursor-pointer"
       >
         Sign Up
       </button>
