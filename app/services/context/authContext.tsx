@@ -1,11 +1,10 @@
 import React, { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import type { User, UserCredential } from 'firebase/auth';
-import type { Unsubscribe } from 'firebase/database';
-import { getApp } from 'firebase/app';
+import { type Teacher } from '~/types/teacher';
 
 interface AuthContextType {
   user: User | null;
-  teachers: any[] | null;
+  teachers: Teacher[] | null;
   login: (email: string, password: string) => Promise<UserCredential | void>;
   signup: (email: string, password: string, name: string) => Promise<UserCredential | void>;
   logout: () => Promise<void>;
@@ -22,7 +21,7 @@ export const useAuth = () => {
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [teachers, setTeachers] = useState<any[] | null>(null);
+  const [teachers, setTeachers] = useState<Teacher[] | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -41,14 +40,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         const authMod = await import('firebase/auth');
         const dbMod = await import('firebase/database');
         const { initializeApp } = firebase;
-        const {
-          getAuth,
-          onAuthStateChanged,
-          signInWithEmailAndPassword,
-          createUserWithEmailAndPassword,
-          signOut,
-          updateProfile,
-        } = authMod;
+        const { getAuth, onAuthStateChanged, signOut } = authMod;
         const { getDatabase, ref, onValue } = dbMod;
 
         const config = {
