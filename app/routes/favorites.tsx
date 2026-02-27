@@ -1,5 +1,5 @@
 import type { Route } from './+types/home';
-import { Welcome } from '../components/welcome/welcome';
+import CardsList from '~/components/cardsList/cardsList';
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -9,5 +9,13 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Favorites() {
-  return <Welcome />;
+  return (
+    <html className="bg-[rgb(248,248,248)]">
+      <body className="px-16 py-8 m-auto w-360 bg-[rgb(248,248,248)]">
+        <main className="py-6 flex flex-col justify-center gap-16">
+          <CardsList />
+        </main>
+      </body>
+    </html>
+  );
 }

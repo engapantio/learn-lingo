@@ -6,24 +6,13 @@ import {
   Scripts,
   ScrollRestoration,
 } from 'react-router';
-import { useState } from 'react';
 import type { Route } from './+types/root';
 import { AuthProvider } from './services/context/authContext';
-import Header from './components/header/header';
-import Modal from './components/modal/modal';
-import Login from './components/login/login';
-import Registration from './components/registration/registration';
 import './app.css';
 
 export const links: Route.LinksFunction = () => [];
 
 export function Layout({ children }: { children: React.ReactNode }) {
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isLogin, setIsLogin] = useState(false);
-
-    const openModal = () => setIsModalOpen(true);
-
-    const closeModal = () => setIsModalOpen(false);
   return (
     <html lang="en">
       <head>
@@ -33,19 +22,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <Header
-          openLogin={() => {
-            setIsLogin(true);
-            openModal();
-          }}
-          openRegistration={() => {
-            setIsLogin(false);
-            openModal();
-          }}
-        />
-        {isModalOpen && (
-          <Modal onClose={closeModal}>{isLogin ? <Login /> : <Registration />}</Modal>
-        )}
         {children}
         <ScrollRestoration />
         <Scripts />
@@ -55,6 +31,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
+
   return (
     <AuthProvider>
       <Outlet />
