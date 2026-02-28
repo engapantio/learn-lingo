@@ -8,6 +8,7 @@ import {
 } from 'react-router';
 import type { Route } from './+types/root';
 import { AuthProvider } from './services/context/authContext';
+import { FavoritesProvider } from './services/context/favoritesContext';
 import './app.css';
 
 export const links: Route.LinksFunction = () => [];
@@ -34,10 +35,17 @@ export default function App() {
 
   return (
     <AuthProvider>
-      <Outlet />
+    {({ user }) => (  
+        <FavoritesProvider user={user}>
+          <div className="min-h-screen bg-gray-50">
+            <Outlet />  
+          </div>
+        </FavoritesProvider>
+      )}
     </AuthProvider>
   );
 }
+
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   let message = 'Oops!';

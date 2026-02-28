@@ -2,6 +2,10 @@ import React, { createContext, useContext, useEffect, useState, type ReactNode }
 import type { User, UserCredential } from 'firebase/auth';
 import { type Teacher } from '~/types/teacher';
 
+export interface AuthProviderProps {
+  children: React.ReactNode | ((props: { user: User | null }) => React.ReactNode);
+}
+
 interface AuthContextType {
   user: User | null;
   teachers: Teacher[] | null;
@@ -19,7 +23,7 @@ export const useAuth = () => {
   return context;
 };
 
-export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [teachers, setTeachers] = useState<Teacher[] | null>(null);
   const [loading, setLoading] = useState(true);
@@ -141,5 +145,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     loading,
   };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+  <AuthContext.Provider value={value}>
+    {typeof children === 'function' 
+      ? (children as (props: { user: User | null }) => React.ReactNode) ({user})  
+      : children
+    }
+  </AuthContext.Provider>
+);
 };

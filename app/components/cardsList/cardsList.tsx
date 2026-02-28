@@ -1,22 +1,27 @@
 import { type Teacher } from '~/types/teacher';
 import useTeachersPagination from '~/hooks/usePaginatedTeachers';
 import Card from '../card/card';
-// interface CardsListProps {
-//   teachers: Teacher[];
-// }
 
-const CardsList = () => {
-  const { teachers, loadMore, hasMore, loading } = useTeachersPagination();
+interface CardsListProps {
+  teachers?: Teacher[]; 
+}
+
+const CardsList = ({teachers }: CardsListProps) => {
+  const { teachers: paginatedTeachers, loadMore, hasMore, loading } = useTeachersPagination();
+  const displayedTeachers = paginatedTeachers || teachers;
+
   return (
     <>
       <ul className="flex flex-col gap-8">
-        {teachers.map((teacher, i) => (
+        {displayedTeachers.map((teacher, i) => {
+          const teacherKey = `t-${teacher.name}-${teacher.surname}-${teacher.price_per_hour}`;
+          return(
           <li key={i}>
-            <Card teacher={teacher} />
-          </li>
-        ))}
+            <Card teacher={teacher} teacherKey={teacherKey} />
+          </li>)
+})}
       </ul>
-      {hasMore && (
+      { hasMore && (
         <button
           onClick={loadMore}
           disabled={loading}

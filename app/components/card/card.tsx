@@ -1,12 +1,17 @@
 import { FiHeart, FiBookOpen, FiStar } from 'react-icons/fi';
 import { useState } from 'react';
 import { type Teacher } from '~/types/teacher';
+import { useFavorites } from '~/services/context/favoritesContext';
 
 interface CardProps {
   teacher: Teacher;
+  teacherKey?: string; 
 }
 
-const Card = ({ teacher }: CardProps) => {
+const Card = ({ teacher, teacherKey = '' }: CardProps) => {
+  const { isFavorite, toggleFavorite } = useFavorites();
+  const keyToUse = teacherKey || `fallback-${Math.random()}`;
+  const isActive = isFavorite(keyToUse);
   const [isMoreRequested, setIsMoreRequested] = useState(false);
   const toggleReadMore = () =>
     isMoreRequested ? setIsMoreRequested(false) : setIsMoreRequested(true);
@@ -49,7 +54,10 @@ const Card = ({ teacher }: CardProps) => {
               Price / 1 hour: <span className="text-live">{`${teacher.price_per_hour}$`}</span>
             </li>
           </ul>
-          <FiHeart />
+          <FiHeart className={`${isActive ? 'fill-red-600 stroke-red-600' : 'fill-transparent'}`} onClick={(e) => {
+            e.stopPropagation();  
+             toggleFavorite(teacherKey);
+  }}/>
         </div>
         <div className="flex flex-col gap-2 leading-normal font-medium mb-4">
           <p className="text-text-grey">
