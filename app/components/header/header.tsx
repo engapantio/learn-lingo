@@ -1,30 +1,44 @@
 import { Link, NavLink } from 'react-router';
-import { FiLogIn } from 'react-icons/fi';
-import logo from './logo.svg';
+import { FiLogIn, FiLogOut } from 'react-icons/fi';
+import { useAuth} from '~/services/context/authContext';
 interface HeaderProps {
   openLogin: () => void;
   openRegistration: () => void;
 }
 
 const Header = ({ openLogin, openRegistration }: HeaderProps) => {
+const {user, logout} = useAuth();
+
   return (
-    <header className="flex bg-white justify-between px-16 mx-auto">
+    <header className="flex bg-transparent justify-between mx-16">
       <Link to="/" className="font-medium text-logo flex  gap-2  py-2.5 mr-30.5">
-        <img src={logo} alt="Logo" className="block w-full h-full" />
+        <img src="/logo.svg" alt="Logo" className="block w-full h-full" />
           LearnLingo
       </Link>
       <nav>
         <ul className="flex gap-7 py-3.5">
           <li className="hover:bg-green-200 rounded-xl">
-            <NavLink to="/teachers">Teachers</NavLink>
+            <NavLink to="/teachers" className={({isActive}) => `nav-link ${isActive ? 'text-primary-green font-medium' : 'text-bg-dark font-normal' }`}>Teachers</NavLink>
           </li>
           <li className="hover:bg-green-200 rounded-xl">
-            <NavLink to="/favorites">Favorites</NavLink>
+            <NavLink to="/favorites" className={({isActive}) => `nav-link ${isActive ? 'text-primary-green font-medium' : 'text-bg-dark font-normal' }`}>Favorites</NavLink>
           </li>
         </ul>
       </nav>
       <ul className="flex gap-4">
-        <li className="py-3.5 rounded-xl hover:bg-green-200">
+        {user ? (
+          <li className="py-3.5 rounded-xl hover:bg-green-200">
+          <button
+            type="button"
+            onClick={() => logout()}
+            className="flex items-center gap-2 font-bold cursor-pointer "
+          >
+            <FiLogOut className="text-primary-green" />
+            Log out
+          </button>
+        </li>) : (
+          <>
+          <li className="py-3.5 rounded-xl hover:bg-green-200">
           <button
             type="button"
             onClick={openLogin}
@@ -43,6 +57,8 @@ const Header = ({ openLogin, openRegistration }: HeaderProps) => {
             Registration
           </button>
         </li>
+      </>) } 
+        
       </ul>
     </header>
   );

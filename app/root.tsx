@@ -37,9 +37,7 @@ export default function App() {
     <AuthProvider>
     {({ user }) => (  
         <FavoritesProvider user={user}>
-          <div className="min-h-screen bg-gray-50">
             <Outlet />  
-          </div>
         </FavoritesProvider>
       )}
     </AuthProvider>

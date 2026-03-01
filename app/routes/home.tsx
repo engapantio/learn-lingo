@@ -18,7 +18,7 @@ export default function Home() {
   
     const closeModal = () => setIsModalOpen(false);
   return (
-    <body className="px-16 py-8 m-auto w-360">
+    <body className="bg-white px-16 py-8 m-auto w-360">
       <Header
         openLogin={() => {
           setIsLogin(true);
@@ -28,9 +28,10 @@ export default function Home() {
           setIsLogin(false);
           openModal();
         }}
+      
       />
       {isModalOpen && <Modal onClose={closeModal}>{isLogin ? <Login /> : <Registration />}</Modal>}
-      <main>
+      <main className='bg-white'>
         <Hero />
       </main>
     </body>

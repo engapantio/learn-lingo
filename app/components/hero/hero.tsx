@@ -1,8 +1,7 @@
 import { Link } from 'react-router';
-import Sticker from '../../../public/sticker.svg';
 const Hero = () => {
   return (
-    <main className="pt-5">
+    <main className="bg-white pt-5">
       <div className="flex gap-6">
         <div className="bg-[#f8f8f8] rounded-[30px] w-180 flex flex-col py-24.5 px-16">
           <h1 className="font-medium text-5xl tracking-[-0.02em] leading-[1.17] mb-8 ">
@@ -24,9 +23,9 @@ const Hero = () => {
         </div>
         <div className="bg-green-200 rounded-[30px] w-142 relative flex flex-col">
           <svg className="w-84.75 h-84.75 mx-auto mt-20 ">
-            <use href="../../../public/sticker.svg"></use>
+            <use href="/sticker.svg"></use>
           </svg>
-          <div className="bg-[url(../../../public/apple.svg)] bg-center bg-no-repeat bg-primary-green w-90 h-44 absolute bottom-0 rounded-t-lg flex justify-center items-center self-center"></div>
+          <div className="bg-[url(/apple.svg)] bg-center bg-no-repeat bg-primary-green w-90 h-44 absolute bottom-0 rounded-t-lg flex justify-center items-center self-center"></div>
         </div>
       </div>
       <ul className="mt-6 rounded-[30px] flex gap-25 border-dashed border-[1.5px] border-primary-green/35 px-30.5 py-10 h-29">

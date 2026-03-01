@@ -12,7 +12,7 @@ const CardsList = ({teachers }: CardsListProps) => {
 
   return (
     <>
-      <ul className="flex flex-col gap-8">
+      <ul className="flex flex-col gap-8 px-16">
         {displayedTeachers.map((teacher, i) => {
           const teacherKey = `t-${teacher.name}-${teacher.surname}-${teacher.price_per_hour}`;
           return(

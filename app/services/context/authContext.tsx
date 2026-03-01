@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import type { User, UserCredential } from 'firebase/auth';
 import { type Teacher } from '~/types/teacher';
 
@@ -39,7 +39,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     let unsubscribeTeachers: (() => void) | null = null;
     const init = async () => {
       try {
-        // ✅ УСІ Firebase модулі динамічно
+  
         const firebase = await import('firebase/app');
         const authMod = await import('firebase/auth');
         const dbMod = await import('firebase/database');
