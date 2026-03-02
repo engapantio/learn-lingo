@@ -19,19 +19,17 @@ return (
         <div className="flex gap-3 justify-end">
           <button
                       type="button"
-                      onClick={() => {
-          openModal();
-        }}
-                      className="flex items-center gap-2 font-bold cursor-pointer "
+                      onClick={openModal}
+                      className="flex items-center gap-2 font-bold cursor-pointer hover:bg-primary-green/75 rounded-[30px] py-2.5 px-2.5"
                     >
                       <FiLogIn className="text-primary-green" />
                       Log in
                     </button>
                         {isModalOpen && (
-                            <><Modal onClose={closeModal}>
+                            <Modal onClose={closeModal}>
                               <Login /> 
                             </Modal>
-                        </>)}
+                        )}
         </div>
       </div>
     </Modal>

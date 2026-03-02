@@ -22,7 +22,7 @@ export const useFavorites = () => {
 };
 
 interface Props {
-user: User | null;
+  user: User | null;
   children: React.ReactNode;
 }
 

@@ -8,8 +8,8 @@ import { FiEyeOff } from 'react-icons/fi';
 import { useAuth } from '~/services/context/authContext';
 
 const Login = () => {
-  const [passwordVisibility, setPasswordVisibility] = useState(true);
-  const [offIcon, setOffIcon] = useState(true);
+  const [passwordVisibility, setPasswordVisibility] = useState(false);
+
 
   const schema = yup.object({
     email: yup
@@ -35,11 +35,9 @@ const Login = () => {
   });
 
   const handleToggle = () => {
-    if (offIcon) {
-      setOffIcon(false);
+    if (passwordVisibility) {
       setPasswordVisibility(false);
     } else {
-      setOffIcon(true);
       setPasswordVisibility(true);
     }
   };
@@ -67,7 +65,7 @@ const Login = () => {
         </p>
       </fieldset>
 
-      <fieldset className="border-none outline-none flex flex-col gap-4.5">
+      <fieldset className="border-none outline-none flex flex-col gap-4.5 max-h-31.5">
         <input
           {...register('email')}
           className="border border-solid border-bg-dark/10 rounded-xl outline-none py-4 w-full h-13.5 pl-4.5 placeholder:text-bg-dark leading-[1.38] "
@@ -77,11 +75,11 @@ const Login = () => {
         <div className="relative">
           <input
             {...register('password')}
-            type={passwordVisibility ? 'password' : 'text'}
+            type={passwordVisibility ? 'text' : 'password'}
             className="border border-solid border-bg-dark/10 rounded-xl outline-none py-4 w-full h-13.5 pl-4.5 placeholder:text-bg-dark leading-[1.38] "
             placeholder="Password"
           />
-          {offIcon ? (
+          {passwordVisibility ? (
             <FiEyeOff
               className="absolute inline-block top-1/2 right-4.5 -translate-y-1/2 w-5 h-5 cursor-pointer"
               onClick={handleToggle}

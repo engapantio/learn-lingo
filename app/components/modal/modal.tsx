@@ -37,7 +37,7 @@ const Modal = ({ onClose, children }: ModalProps) => {
       role="dialog"
       aria-modal="true"
     >
-      <div className="relative w-141.5 h-150 rounded-[30px] bg-white p-16">
+      <div className="relative w-141.5 h-auto rounded-[30px] bg-white p-16">
         <FiX
           className="absolute top-5 right-5 w-8 h-8 cursor-pointer text-2xl flex justify-center items-center p-0 border-none"
           onClick={onClose}

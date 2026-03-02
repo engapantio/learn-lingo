@@ -2,6 +2,8 @@ import { FiHeart, FiBookOpen, FiStar } from 'react-icons/fi';
 import { useState } from 'react';
 import { type Teacher } from '~/types/teacher';
 import { useFavorites } from '~/services/context/favoritesContext';
+import Modal from '../modal/modal';
+import BookingForm from '../booking/booking';
 
 interface CardProps {
   teacher: Teacher;
@@ -9,6 +11,9 @@ interface CardProps {
 }
 
 const Card = ({ teacher, teacherKey = '' }: CardProps) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
   const { isFavorite, toggleFavorite } = useFavorites();
   const keyToUse = teacherKey || `fallback-${Math.random()}`;
   const isActive = isFavorite(keyToUse);
@@ -109,9 +114,13 @@ const Card = ({ teacher, teacherKey = '' }: CardProps) => {
                 </li>
               ))}
             </ul>
-            <button className="rounded-xl outline-none bg-primary-green hover:bg-primary-green/75 py-4 mx-auto font-[inherit] w-58.5 h-15 font-bold  text-lg text-bg-dark text-center cursor-pointer">
+            <button className="rounded-xl outline-none bg-primary-green hover:bg-primary-green/75 py-4 mx-auto font-[inherit] w-58.5 h-15 font-bold  text-lg text-bg-dark text-center cursor-pointer"
+            onClick={openModal}>
               Book trial lesson
             </button>
+            {isModalOpen && (<Modal onClose={closeModal}>
+              <BookingForm teacher={teacher}/>
+            </Modal>)}
           </>
         ) : (
           <ul className="flex gap-2 font-medium leading-[1.14] text-sm">
