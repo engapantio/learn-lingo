@@ -10,67 +10,149 @@ import {
 } from 'firebase/database';
 import { type Teacher } from '~/types/teacher';
 
-const useTeachersPagination = (pageSize = 4) => {
-  const [teachers, setTeachers] = useState<Teacher[]>([]);
+export interface TeachersFilters {
+  language: string;
+  level: string;
+  price: string;
+}
+
+const BATCH_SIZE = 20; 
+const PAGE_SIZE = 4;   
+
+const matchesFilters = (teacher: Teacher, filters: TeachersFilters): boolean => {
+  const matchLang =
+    !filters.language ||
+    teacher.languages.some((l) =>
+      l.toLowerCase().includes(filters.language.toLowerCase())
+    );
+
+  const matchLevel =
+    !filters.level ||
+    teacher.levels.some((l) =>
+      l.toLowerCase().includes(filters.level.toLowerCase())
+    );
+
+  const matchPrice =
+    !filters.price || teacher.price_per_hour === Number(filters.price);
+
+  return matchLang && matchLevel && matchPrice;
+};
+
+const useTeachersPagination = (filters: TeachersFilters, pageSize = PAGE_SIZE) => {
+  const [rawTeachers, setRawTeachers] = useState<Teacher[]>([]);
+   const [visibleCount, setVisibleCount] = useState(pageSize);
   const [lastKey, setLastKey] = useState<string | null>(null);
-  const [hasMore, setHasMore] = useState(true);
+  const [hasMoreInDb, setHasMoreInDb] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [totalLoaded, setTotalLoaded] = useState(0);
 
-  const loadPage = async (afterKey: string | null) => {
-    setLoading(true);
 
-    const db = getDatabase();
-    const teachersRef = ref(db, 'teachers');
+  const filteredTeachers = rawTeachers.filter((t) => matchesFilters(t, filters));
+  const visibleTeachers = filteredTeachers.slice(0, visibleCount);
+    const hasMore = visibleCount < filteredTeachers.length || hasMoreInDb;
 
+    const fetchBatch = useCallback(async (afterKey: string | null): Promise<{
+    items: Teacher[];
+    keys: string[];
+    isLast: boolean;
+  }> => {
     let q;
     if (afterKey) {
-      q = query(teachersRef, orderByKey(), startAfter(afterKey), limitToFirst(pageSize + 1));
+      q = query(
+        ref(getDatabase(), 'teachers'),
+        orderByKey(),
+        startAfter(afterKey),
+        limitToFirst(BATCH_SIZE)
+      );
     } else {
-      q = query(teachersRef, orderByKey(), limitToFirst(pageSize + 1));
+      q = query(
+        ref(getDatabase(), 'teachers'),
+        orderByKey(),
+        limitToFirst(BATCH_SIZE)
+      );
+    }
+         const snapshot = await get(q);
+    if (!snapshot.exists()) return { items: [], keys: [], isLast: true };
+
+    const rawData: Record<string, Teacher> = snapshot.val() || {};
+    return {
+      items: Object.values(rawData),
+      keys: Object.keys(rawData),
+      isLast: Object.keys(rawData).length < BATCH_SIZE,
+    };
+  }, []);
+
+
+  useEffect(() => {
+    const init = async () => {
+      setLoading(true);
+      setRawTeachers([]);
+      setLastKey(null);
+      setVisibleCount(pageSize);
+      setHasMoreInDb(true);
+
+      try {
+        const { items, keys, isLast } = await fetchBatch(null);
+        setRawTeachers(items);
+        setLastKey(isLast ? null : keys[keys.length - 1]);
+        setHasMoreInDb(!isLast);
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    init();
+  }, []); 
+
+ 
+  useEffect(() => {
+    setVisibleCount(pageSize);
+  }, [filters, pageSize]);
+
+  
+  const loadMore = useCallback(async () => {
+    if (loading) return;
+
+    const filtered = rawTeachers.filter((t) => matchesFilters(t, filters));
+    const nextVisible = visibleCount + pageSize;
+
+   
+    if (nextVisible <= filtered.length) {
+      setVisibleCount(nextVisible);
+      return;
     }
 
+  
+    if (!hasMoreInDb) {
+      setVisibleCount(nextVisible); // 
+      return;
+    }
+
+    setLoading(true);
     try {
-      const snapshot = await get(q);
+      const { items, keys, isLast } = await fetchBatch(lastKey);
 
-      if (!snapshot.exists()) {
-        setHasMore(false);
-        setLoading(false);
-        return;
-      }
-
-      const rawData = snapshot.val() as Record<string, Teacher>;
-      const items: Teacher[] = Object.values(rawData);
-
-      if (items.length > pageSize) {
-        const displayItems = items.slice(0, pageSize);
-        const keys = Object.keys(rawData);
-        setTeachers(prev => (afterKey ? [...prev, ...displayItems] : displayItems));
-        setLastKey(keys[pageSize]);
-        setHasMore(true);
-      } else {
-        setTeachers(prev => (afterKey ? [...prev, ...items] : items));
-        setHasMore(false);
-      }
-
-      setTotalLoaded(prev => prev + Math.min(items.length, pageSize));
-    } catch (error) {
-      console.error(error);
+      const updatedRaw = [...rawTeachers, ...items];
+      setRawTeachers(updatedRaw);
+      setLastKey(isLast ? null : keys[keys.length - 1]);
+      setHasMoreInDb(!isLast);
+      setVisibleCount(nextVisible);
+    } catch (e) {
+      console.error(e);
     } finally {
       setLoading(false);
     }
+  }, [loading, rawTeachers, filters, visibleCount, pageSize, hasMoreInDb, lastKey, fetchBatch]);
+
+  return {
+    teachers: visibleTeachers,     
+    loadMore,
+    hasMore,
+    loading,
+    totalLoaded: visibleTeachers.length,
+    applyFilters: () => {},     
   };
-
-  useEffect(() => {
-    loadPage(null);
-  }, []);
-
-  const loadMore = useCallback(async () => {
-    if (!hasMore || loading || !lastKey) return;
-    await loadPage(lastKey);
-  }, [hasMore, loading, lastKey]);
-
-  return { teachers, loadMore, hasMore, loading, totalLoaded };
 };
 
 export default useTeachersPagination;

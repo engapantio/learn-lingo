@@ -1,22 +1,23 @@
 import { type Teacher } from '~/types/teacher';
-import useTeachersPagination from '~/hooks/usePaginatedTeachers';
 import Card from '../card/card';
 
 interface CardsListProps {
   teachers?: Teacher[]; 
+  loadMore: () => void;
+  hasMore: boolean;
+  loading: boolean;
 }
 
-const CardsList = ({teachers }: CardsListProps) => {
-  const { teachers: paginatedTeachers, loadMore, hasMore, loading } = useTeachersPagination();
-  const displayedTeachers = paginatedTeachers || teachers;
+const CardsList = ({teachers, loadMore, hasMore, loading}: CardsListProps) => {
+ 
 
   return (
     <>
       <ul className="flex flex-col gap-8 px-16">
-        {displayedTeachers.map((teacher, i) => {
+        {teachers?.map((teacher) => {
           const teacherKey = `t-${teacher.name}-${teacher.surname}-${teacher.price_per_hour}`;
           return(
-          <li key={i}>
+          <li key={teacherKey}>
             <Card teacher={teacher} teacherKey={teacherKey} />
           </li>)
 })}

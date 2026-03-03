@@ -10,7 +10,7 @@ interface BookingFormProps {
   onClose: () => void;
 }
 
-const BookingForm = ({ teacher, onSubmit, onClose }: BookingFormProps) => {
+const BookingForm = ({ teacher, onSubmit }: BookingFormProps) => {
     const schema = yup.object({
     reason: yup.string().oneOf(['career','kids','abroad','exams','culture'], 'Select a reason for learning').required(),
     fullName: yup.string().min(2).max(100).required('Full name required'),
