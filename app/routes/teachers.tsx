@@ -49,7 +49,7 @@ export default function Teachers() {
           openModal();
         }}
       />
-      {isModalOpen && <Modal onClose={closeModal}>{isLogin ? <Login /> : <Registration />}</Modal>}
+      {isModalOpen && <Modal onClose={closeModal}>{isLogin ? <Login onSuccess={closeModal}/> : <Registration onSuccess={closeModal}/>}</Modal>}
         <main className="py-6 flex flex-col justify-center gap-8">
           <TeachersFilter onFiltersChange={setFilters}/>
           <CardsList teachers={teachers} loadMore={loadMore} hasMore={hasMore} loading={loading} />

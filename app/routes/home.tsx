@@ -30,7 +30,7 @@ export default function Home() {
         }}
       
       />
-      {isModalOpen && <Modal onClose={closeModal}>{isLogin ? <Login /> : <Registration />}</Modal>}
+      {isModalOpen && <Modal onClose={closeModal}>{isLogin ? <Login onSuccess={closeModal} /> : <Registration onSuccess={closeModal}/>}</Modal>}
       <main className='bg-white'>
         <Hero />
       </main>

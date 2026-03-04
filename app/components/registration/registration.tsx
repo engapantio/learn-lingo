@@ -7,8 +7,11 @@ import { FiEye } from 'react-icons/fi';
 import { FiEyeOff } from 'react-icons/fi';
 import { useAuth } from '~/services/context/authContext';
 
+interface RegistrationProps {
+  onSuccess?: () => void; 
+}
 
-const Registration = () => {
+const Registration = ({onSuccess}: RegistrationProps) => {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
 
   const schema = yup.object({
@@ -48,6 +51,7 @@ const Registration = () => {
       const email = data.email.trim().toLowerCase();
       console.log(data.email);
       await signup(data.name, email, data.password);
+      onSuccess?.();
       navigate('/teachers');
     } catch (error: any) {
       alert(error.message);

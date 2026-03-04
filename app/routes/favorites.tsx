@@ -8,6 +8,9 @@ import Header from '~/components/header/header';
 import Modal from '~/components/modal/modal';
 import Login from '~/components/login/login';
 import Registration from '~/components/registration/registration';
+import usePaginatedList from '~/hooks/usePaginatedList';
+import TeachersFilter from '~/components/filter/filter';
+import { type TeachersFilters } from '~/hooks/usePaginatedTeachers';
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -19,15 +22,22 @@ export function meta({}: Route.MetaArgs) {
 export default function Favorites() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
+   const [filters, setFilters] = useState<TeachersFilters>({
+    language: '',
+    level: '',
+    price: '',
+  });
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
   const { favoriteIds } = useFavorites();
-  const { user, teachers } = useAuth() as any;
+  const { user, teachers: allTeachers } = useAuth() as any;
   const teacherKey = (t: Teacher) =>
   `t-${t.name}-${t.surname}-${t.price_per_hour}`;
-  const favoriteTeachers = (teachers ?? []).filter((t: Teacher) =>
-  favoriteIds.has(teacherKey(t))
+  const favoriteTeachers: Teacher[] = (allTeachers ?? []).filter((t:Teacher) => favoriteIds.has(teacherKey(t))
 );
+
+
+const {teachers, loadMore, hasMore, loading} = usePaginatedList(favoriteTeachers, filters, 4);
 
   return (
     <html className="bg-[rgb(248,248,248)]">
@@ -42,9 +52,10 @@ export default function Favorites() {
           openModal();
         }}
       />
-      {isModalOpen && <Modal onClose={closeModal}>{isLogin ? <Login /> : <Registration />}</Modal>}
+      {isModalOpen && <Modal onClose={closeModal}>{isLogin ? <Login onSuccess={closeModal}/> : <Registration onSuccess={closeModal}/>}</Modal>}
         <main className="py-6 flex flex-col justify-center gap-16">
-          {user && <CardsList teachers={favoriteTeachers} />}
+          <TeachersFilter onFiltersChange={setFilters}/>
+          <CardsList teachers={teachers} loadMore={loadMore} hasMore={hasMore} loading={loading}/>
         </main>
       </body>
     </html>

@@ -7,7 +7,11 @@ import { FiEye } from 'react-icons/fi';
 import { FiEyeOff } from 'react-icons/fi';
 import { useAuth } from '~/services/context/authContext';
 
-const Login = () => {
+interface LoginProps {
+  onSuccess?: () => void;
+}
+
+const Login = ({ onSuccess }: LoginProps) => {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
 
 
@@ -47,6 +51,7 @@ const Login = () => {
       const email = data.email.trim().toLowerCase();
       console.log(data.email);
       await login(email, data.password);
+      onSuccess?.();
       navigate('/favorites');
     } catch (error: any) {
       alert(error.message);
