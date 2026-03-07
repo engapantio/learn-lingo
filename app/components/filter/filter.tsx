@@ -44,9 +44,9 @@ useEffect(() => {
 
 return (
   <form className="flex gap-5 px-16">
-      <Dropdown label='Languages' value={language} options={languages} placeholder="" onChange={setLanguage} width={55.25} />
-      <Dropdown label='Level of knowledge' value={level} options={levels} placeholder="" onChange={setLevel} width={49.5} />
-      <Dropdown label='Price' value={`${price} $`} options={prices} placeholder="" onChange={setPrice} width={31} />
+      <Dropdown label='Languages' value={language} options={languages} placeholder="" onChange={setLanguage} width={221} />
+      <Dropdown label='Level of knowledge' value={level} options={levels} placeholder="" onChange={setLevel} width={198} />
+      <Dropdown label='Price' value={`${price} $`} options={prices} placeholder="" onChange={setPrice} width={124} />
   </form>
 )
 

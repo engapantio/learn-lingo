@@ -21,6 +21,8 @@ const Dropdown = ({width, label, value, placeholder, options,onChange}: Dropdown
     document.addEventListener('mousedown', handler);
     return () => document.removeEventListener('mousedown', handler);
   }, [])
+
+  const fixedWidth = { width: `${width}px`, minWidth: `${width}px`, maxWidth: `${width}px` };
   
   return (
     <fieldset className="relative flex flex-col gap-2" ref={ref}>
@@ -32,7 +34,8 @@ const Dropdown = ({width, label, value, placeholder, options,onChange}: Dropdown
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className={`block min-w-${width} h-12 flex items-center justify-between px-4 pl-4 border-none font-medium text-bg-dark leading-[1.11] text-lg rounded-[14px] bg-white  hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500`}
+        style={fixedWidth}
+        className='h-12 flex items-center justify-between px-4 pl-4 border-none font-medium text-bg-dark leading-[1.11] text-lg rounded-[14px] bg-white  hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500'
       >
         <span className={value ? "text-gray-900" : "text-gray-400"}>
           {value || placeholder}
@@ -61,7 +64,8 @@ const Dropdown = ({width, label, value, placeholder, options,onChange}: Dropdown
               onChange("");
               setOpen(false);
             }}
-            className={`block min-w-${width} h-12 flex items-center justify-between px-4 pl-4 border-none font-medium text-bg-dark leading-[1.11] text-lg rounded-[14px] bg-white  hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500`}
+            style={fixedWidth}
+            className='h-12 flex items-center justify-between px-4 pl-4 border-none font-medium text-bg-dark leading-[1.11] text-lg rounded-[14px] bg-white  hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500'
           >
             — All —
           </button>
@@ -73,7 +77,8 @@ const Dropdown = ({width, label, value, placeholder, options,onChange}: Dropdown
                 onChange(opt);
                 setOpen(false);
               }}
-              className={`min-w-${width} text-left px-4 py-2 text-sm hover:bg-gray-100 ${
+              style={fixedWidth}
+              className={`block text-left px-4 py-2 text-sm hover:bg-gray-100 ${
                 opt === value ? "bg-blue-50 text-blue-600" : "text-gray-800"
               }`}
             >
