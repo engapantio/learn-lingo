@@ -1,9 +1,5 @@
-import { useState } from 'react';
 import type { Route } from './+types/home';
-import Header from '~/components/header/header';
-import Modal from '~/components/modal/modal';
-import Registration from '~/components/registration/registration';
-import Login from '~/components/login/login';
+import PageLayout from '~/components/layout/pageLayout';
 import Hero from '~/components/hero/hero';
 
 export function meta({}: Route.MetaArgs) {
@@ -11,15 +7,10 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Home() {
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isLogin, setIsLogin] = useState(false);
-  
-    const openModal = () => setIsModalOpen(true);
-  
-    const closeModal = () => setIsModalOpen(false);
   return (
-    <body className="bg-white px-16 py-8 m-auto w-360">
-      <Header
+    // <body className="bg-white px-16 py-8 m-auto w-360">
+    <div className="bg-white min-h-screen -mx-16 -mt-8 px-16 py-8">
+      {/* <Header
         openLogin={() => {
           setIsLogin(true);
           openModal();
@@ -28,12 +19,19 @@ export default function Home() {
           setIsLogin(false);
           openModal();
         }}
-      
       />
-      {isModalOpen && <Modal onClose={closeModal}>{isLogin ? <Login onSuccess={closeModal} /> : <Registration onSuccess={closeModal}/>}</Modal>}
-      <main className='bg-white'>
-        <Hero />
-      </main>
-    </body>
+      {isModalOpen && (
+        <Modal onClose={closeModal}>
+          {isLogin ? <Login onSuccess={closeModal} /> : <Registration onSuccess={closeModal} />}
+        </Modal>
+      )} */}
+      <PageLayout>
+        <main className="bg-white">
+          <Hero />
+        </main>
+      </PageLayout>
+
+      {/* </body> */}
+    </div>
   );
 }

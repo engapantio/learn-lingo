@@ -7,7 +7,7 @@ import BookingForm from '../booking/booking';
 
 interface CardProps {
   teacher: Teacher;
-  teacherKey?: string; 
+  teacherKey?: string;
 }
 
 const Card = ({ teacher, teacherKey = '' }: CardProps) => {
@@ -59,10 +59,13 @@ const Card = ({ teacher, teacherKey = '' }: CardProps) => {
               Price / 1 hour: <span className="text-live">{`${teacher.price_per_hour}$`}</span>
             </li>
           </ul>
-          <FiHeart className={`${isActive ? 'fill-red-600 stroke-red-600' : 'fill-transparent'}`} onClick={(e) => {
-            e.stopPropagation();  
-             toggleFavorite(teacherKey);
-  }}/>
+          <FiHeart
+            className={`${isActive ? 'fill-red-600 stroke-red-600' : 'fill-transparent'}`}
+            onClick={e => {
+              e.stopPropagation();
+              toggleFavorite(teacherKey);
+            }}
+          />
         </div>
         <div className="flex flex-col gap-2 leading-normal font-medium mb-4">
           <p className="text-text-grey">
@@ -89,7 +92,7 @@ const Card = ({ teacher, teacherKey = '' }: CardProps) => {
               {teacher.reviews.map((review, i) => (
                 <li key={i} className="flex flex-col gap-4">
                   <div className=" flex gap-3">
-                    <div className="rounded-full w-11 h-11 bg-primary-green/50 text-primary-green border-2 border-primary-green/90 flex justify-center items-center">
+                    <div className="rounded-full w-11 h-11 bg-primary-green text-bg-button border-2 border-bg-button flex justify-center items-center">
                       {review.reviewer_name.slice(0, 1).toUpperCase()}
                     </div>
                     <div>
@@ -114,20 +117,24 @@ const Card = ({ teacher, teacherKey = '' }: CardProps) => {
                 </li>
               ))}
             </ul>
-            <button className="rounded-xl outline-none bg-primary-green hover:bg-primary-green/75 py-4 mx-auto font-[inherit] w-58.5 h-15 font-bold  text-lg text-bg-dark text-center cursor-pointer"
-            onClick={openModal}>
+            <button
+              className="rounded-xl outline-none bg-bg-button hover:bg-primary-green/75 py-4 mx-auto font-[inherit] w-58.5 h-15 font-bold  text-lg text-bg-dark text-center cursor-pointer"
+              onClick={openModal}
+            >
               Book trial lesson
             </button>
-            {isModalOpen && (<Modal onClose={closeModal}>
-              <BookingForm teacher={teacher}/>
-            </Modal>)}
+            {isModalOpen && (
+              <Modal onClose={closeModal}>
+                <BookingForm teacher={teacher} onClose={closeModal} />
+              </Modal>
+            )}
           </>
         ) : (
           <ul className="flex gap-2 font-medium leading-[1.14] text-sm">
             {teacher.levels.map((level, i) => (
               <li
                 key={i}
-                className="first:bg-primary-green first:border-none rounded-[35px] py-2 px-3 border border-bg-dark/20 flex justify-center items-center"
+                className="first:bg-bg-button first:border-none rounded-[35px] py-2 px-3 border border-bg-dark/20 flex justify-center items-center"
               >
                 {`#${level}`}
               </li>

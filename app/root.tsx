@@ -6,6 +6,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from 'react-router';
+import { Toaster } from 'react-hot-toast';
 import type { Route } from './+types/root';
 import { AuthProvider } from './services/context/authContext';
 import { FavoritesProvider } from './services/context/favoritesContext';
@@ -22,7 +23,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className="m-auto w-360 px-16 py-8">
         {children}
         <ScrollRestoration />
         <Scripts />
@@ -32,18 +33,33 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-
   return (
     <AuthProvider>
-    {({ user }) => (  
+      {({ user }) => (
         <FavoritesProvider user={user}>
-            <Outlet />  
+          <Toaster
+            position="top-right"
+            toastOptions={{
+              success: {
+                style: {
+                  background: '#295761',
+                  color: '#fff',
+                },
+              },
+              error: {
+                style: {
+                  background: '#fee2e2',
+                  color: '#991b1b',
+                },
+              },
+            }}
+          />
+          <Outlet />
         </FavoritesProvider>
       )}
     </AuthProvider>
   );
 }
-
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   let message = 'Oops!';

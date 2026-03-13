@@ -5,6 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { FiEye } from 'react-icons/fi';
 import { FiEyeOff } from 'react-icons/fi';
+import toast from 'react-hot-toast';
 import { useAuth } from '~/services/context/authContext';
 
 interface LoginProps {
@@ -13,7 +14,6 @@ interface LoginProps {
 
 const Login = ({ onSuccess }: LoginProps) => {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
-
 
   const schema = yup.object({
     email: yup
@@ -51,10 +51,11 @@ const Login = ({ onSuccess }: LoginProps) => {
       const email = data.email.trim().toLowerCase();
       console.log(data.email);
       await login(email, data.password);
+      toast.success('Welcome back! You have successfully logged in.');
       onSuccess?.();
       navigate('/favorites');
     } catch (error: any) {
-      alert(error.message);
+      toast.error('Login failed. Please check your credentials.');
     }
   };
 
@@ -101,7 +102,7 @@ const Login = ({ onSuccess }: LoginProps) => {
       <button
         type="submit"
         disabled={isSubmitting || loading}
-        className="rounded-xl outline-none bg-primary-green hover:bg-primary-green/75 py-4 mx-auto font-[inherit] w-109.5 h-15 font-bold  text-lg text-bg-dark text-center cursor-pointer"
+        className="rounded-xl outline-none bg-bg-button hover:bg-primary-green/75 py-4 mx-auto font-[inherit] w-109.5 h-15 font-bold  text-lg text-bg-dark text-center cursor-pointer"
       >
         Log In
       </button>
