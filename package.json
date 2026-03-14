@@ -23,6 +23,7 @@
     "yup": "^1.7.1"
   },
   "devDependencies": {
+    "@netlify/vite-plugin-react-router": "^3.1.0",
     "@react-router/dev": "7.12.0",
     "@tailwindcss/vite": "^4.1.13",
     "@types/node": "^22",
