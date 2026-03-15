@@ -50,7 +50,7 @@ git clone https://github.com/engapantio/learn-lingo.git
 cd learn-lingo
 npm install
 
-Environment Variables
+### Environment Variables
 
 Create a .env file in the project root:
 VITE_FIREBASE_API_KEY=your_api_key
@@ -62,20 +62,20 @@ VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
 VITE_FIREBASE_APP_ID=your_app_id
 VITE_FIREBASE_MEASUREMENT_ID=your_measurement_id
 
-Development
+### Development
 ```bash
 npm run dev
 
-Production Build
+## Production Build
 ```bash
 npm run build
 npm start
 
-Deployment (Netlify)
+### Deployment (Netlify)
 The app deploys automatically on push to main. Netlify detects React Router v7 via @netlify/vite-plugin-react-router and bundles SSR into a serverless function.
 
 
-Project Structure
+## Project Structure
 
 learn-lingo/
 ├── app/
@@ -88,14 +88,14 @@ learn-lingo/
 ├── vite.config.ts
 └── package.json
 
-Scripts
-Command	Description
+## Scripts
+### Command	Description
 npm run dev	Start dev server with HMR
 npm run build	Production build (client + SSR)
 npm start	Serve SSR build locally
 npm run typecheck	Run TypeScript type checking
 
-Author
+## Author
 Engapantio – @engapantio
 
 ***
